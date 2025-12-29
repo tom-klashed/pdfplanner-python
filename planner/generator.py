@@ -228,7 +228,7 @@ def draw_yearly_tracker(c, year, W, H):
     draw_apple_tab(c, W - r_margin - tab_w, H - 22*mm, tab_w, 9*mm, "Tracker", active=True, destination="YearlyTracker", icon_key="goals")
 
     # Legend / Key at Top
-    legend_y = H - 48*mm
+    legend_y = H - 42*mm
     legend_x = margin + 15*mm
     grid_w_full = W - margin - legend_x - 10*mm
     item_w = grid_w_full / 4
@@ -269,7 +269,7 @@ def draw_yearly_tracker(c, year, W, H):
 
     # Grid Setup
     grid_x = margin + 15*mm
-    grid_y = H - 58*mm
+    grid_y = H - 52*mm
     grid_w = grid_w_full
     grid_h = grid_y - 15*mm
     
@@ -374,7 +374,7 @@ def draw_summary_page(c, year, W, H):
     draw_apple_tab(c, W - r_margin - tab_w, H - 22*mm, tab_w, 9*mm, "Tracker", destination="YearlyTracker", icon_key="goals")
     
     # Grid Setup (4 cols x 3 rows)
-    grid_top = H - 40*mm
+    grid_top = H - 34*mm
     grid_bottom = 15*mm
     grid_w = W - 2*margin
     grid_h = grid_top - grid_bottom
@@ -473,7 +473,7 @@ def draw_six_month_overview(c, year, start_month, W, H):
         c.setFillColor(month_color)
         c.setFont("Helvetica-Bold", 9)
         month_name = calendar.month_name[m].upper()
-        c.drawCentredString(x + col_w/2, top_y + 0.5*mm, month_name)
+        c.drawCentredString(x + col_w/2, top_y + 1.0*mm, month_name)
         c.linkRect("", f"Month_{m}", (x + 1*mm, top_y - 2*mm, x + col_w - 1*mm, top_y + 5*mm), Border='[0 0 0]')
         
         # Days
@@ -498,13 +498,13 @@ def draw_six_month_overview(c, year, start_month, W, H):
                 
                 # Day Number
                 c.setFillColor(LABEL_COLOR if not is_weekend else SYSTEM_GRAY)
-                c.setFont("Helvetica", 6.5)
-                c.drawString(x + 2.5*mm, y - 1*mm, str(day))
+                c.setFont("Helvetica-Bold", 7)
+                c.drawRightString(x + 4.5*mm, y - 0.7*mm, str(day))
                 
                 # Day Name (Initial)
-                c.setFont("Helvetica", 5)
-                c.setFillColor(SYSTEM_GRAY_2)
-                c.drawString(x + 6*mm, y - 1*mm, dt.strftime("%a")[0])
+                c.setFont("Helvetica", 7)
+                c.setFillColor(SYSTEM_GRAY_2 if not is_weekend else SYSTEM_GRAY_3)
+                c.drawString(x + 5.5*mm, y - 0.7*mm, dt.strftime("%a")[0])
                 
                 # Link to Daily Page
                 c.linkRect("", f"Day_{year}_{m}_{day}", (x + 1*mm, y - row_h/2, x + col_w - 1*mm, y + row_h/2), Border='[0 0 0]')
@@ -548,9 +548,9 @@ def draw_monthly_page(c, year, month, W, H):
     for title, num_lines, icon_key in sections:
         c.setFont("Helvetica-Bold", 11)
         c.setFillColor(month_color)
-        draw_icon(c, icon_key, margin + 2*mm, sec_y, 4*mm, month_color)
-        c.drawString(margin + 8*mm, sec_y, title)
-        sec_y -= 4.5*mm
+        draw_icon(c, icon_key, margin + 0.5*mm, sec_y, 4*mm, month_color)
+        c.drawString(margin + 6*mm, sec_y, title)
+        sec_y -= 3.5*mm
         
         # Grouped List Background
         group_h = num_lines * line_h
