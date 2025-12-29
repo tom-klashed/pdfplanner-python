@@ -26,7 +26,7 @@ SECONDARY_LABEL = colors.HexColor("#6E6E73")
 TERTIARY_LABEL = colors.HexColor("#86868B")
 SEPARATOR_COLOR = colors.HexColor("#D2D2D7")
 BACKGROUND_COLOR = colors.HexColor("#E6E3D2") # Warm Cream Background
-CARD_COLOR = colors.white
+CARD_COLOR = colors.HexColor("#F2F0E7")
 
 # Muted "Earth-Tone" Pastel Palette for Monthly Themes
 MONTH_COLORS = [
@@ -468,7 +468,7 @@ def draw_six_month_overview(c, year, start_month, W, H):
         
         # Month Header (Grouped Style) - Clickable
         month_color = MONTH_COLORS[m-1]
-        c.setFillColor(colors.white)
+        c.setFillColor(CARD_COLOR)
         c.roundRect(x + 1*mm, top_y - 2*mm, col_w - 2*mm, 7*mm, 2*mm, fill=1, stroke=0)
         c.setFillColor(month_color)
         c.setFont("Helvetica-Bold", 9)
@@ -631,7 +631,7 @@ def draw_daily_page(c, date, W, H):
     badge_w = c.stringWidth(date_str + " " + year_str, "Helvetica-Bold", 12) + 10*mm
     
     c.saveState()
-    c.setFillColor(colors.white)
+    c.setFillColor(CARD_COLOR)
     c.roundRect(margin, badge_y, badge_w, badge_h, 3*mm, fill=1, stroke=0)
     c.restoreState()
     
@@ -674,7 +674,7 @@ def draw_daily_page(c, date, W, H):
     
     num_todo = 14
     todo_h = available_h
-    c.setFillColor(colors.white)
+    c.setFillColor(CARD_COLOR)
     c.roundRect(x1, bottom_y, col1_w, todo_h, 5*mm, fill=1, stroke=0)
     
     # Add padding inside the box
@@ -707,7 +707,7 @@ def draw_daily_page(c, date, W, H):
     c.drawString(x2 + 7*mm, top_y + 2.0*mm, "Priorities")
     
     prio_h = 40 * mm
-    c.setFillColor(colors.white)
+    c.setFillColor(CARD_COLOR)
     c.roundRect(x2, top_y - prio_h, col2_w, prio_h, 5*mm, fill=1, stroke=0)
     
     prio_padding = 4*mm
@@ -732,7 +732,7 @@ def draw_daily_page(c, date, W, H):
     x3 = x2 + col2_w + col_gap
     
     # Schedule Box
-    c.setFillColor(colors.white)
+    c.setFillColor(CARD_COLOR)
     c.roundRect(x3, bottom_y, col3_w, available_h, 5*mm, fill=1, stroke=0)
     
     c.setFont("Helvetica-Bold", 13)
