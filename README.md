@@ -1,6 +1,6 @@
 # Planner PDF Generator
 
-This is completed vibe coded, so please excuse.
+This is completely vibe coded, so please excuse.
 
 ## Usage
 
