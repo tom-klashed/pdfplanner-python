@@ -806,11 +806,6 @@ def generate_year_pdf(year, out_path):
     draw_summary_page(c, year, W, H)
     c.showPage()
     
-    # 2.5 Yearly Tracker
-    c.bookmarkPage("YearlyTracker")
-    draw_yearly_tracker(c, year, W, H)
-    c.showPage()
-    
     # 3. Six-Month Overviews
     c.bookmarkPage("SixMonth_1")
     draw_six_month_overview(c, year, 1, W, H)
@@ -818,8 +813,13 @@ def generate_year_pdf(year, out_path):
     c.bookmarkPage("SixMonth_7")
     draw_six_month_overview(c, year, 7, W, H)
     c.showPage()
+
+    # 4. Yearly Tracker
+    c.bookmarkPage("YearlyTracker")
+    draw_yearly_tracker(c, year, W, H)
+    c.showPage()
     
-    # 4. Monthly & Daily Pages
+    # 5. Monthly & Daily Pages
     start_date = datetime(year, 1, 1)
     end_date = datetime(year, 12, 31)
     
