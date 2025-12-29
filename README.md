@@ -2,6 +2,8 @@
 
 This is completely vibe coded, so please excuse.
 
+If you just want the planner it's the PDF file above.
+
 ## Usage
 
 To generate the default 2026 planner:
