@@ -26,7 +26,7 @@ SECONDARY_LABEL = colors.HexColor("#6E6E73")
 TERTIARY_LABEL = colors.HexColor("#86868B")
 SEPARATOR_COLOR = colors.HexColor("#D2D2D7")
 BACKGROUND_COLOR = colors.HexColor("#E6E3D2") # Warm Cream Background
-CARD_COLOR = SYSTEM_GRAY_6
+CARD_COLOR = colors.white
 
 # Muted "Earth-Tone" Pastel Palette for Monthly Themes
 MONTH_COLORS = [
@@ -468,12 +468,12 @@ def draw_six_month_overview(c, year, start_month, W, H):
         
         # Month Header (Grouped Style) - Clickable
         month_color = MONTH_COLORS[m-1]
-        c.setFillColor(SYSTEM_GRAY_6)
+        c.setFillColor(colors.white)
         c.roundRect(x + 1*mm, top_y - 2*mm, col_w - 2*mm, 7*mm, 2*mm, fill=1, stroke=0)
         c.setFillColor(month_color)
         c.setFont("Helvetica-Bold", 9)
         month_name = calendar.month_name[m].upper()
-        c.drawCentredString(x + col_w/2, top_y + 1.0*mm, month_name)
+        c.drawCentredString(x + col_w/2, top_y + 0.35*mm, month_name)
         c.linkRect("", f"Month_{m}", (x + 1*mm, top_y - 2*mm, x + col_w - 1*mm, top_y + 5*mm), Border='[0 0 0]')
         
         # Days
@@ -548,13 +548,12 @@ def draw_monthly_page(c, year, month, W, H):
     for title, num_lines, icon_key in sections:
         c.setFont("Helvetica-Bold", 11)
         c.setFillColor(month_color)
-        draw_icon(c, icon_key, margin + 0.5*mm, sec_y, 4*mm, month_color)
-        c.drawString(margin + 6*mm, sec_y, title)
-        sec_y -= 3.5*mm
+        draw_icon(c, icon_key, margin + 1*mm, sec_y + 1.5*mm, 4*mm, month_color)
+        c.drawString(margin + 7*mm, sec_y + 2.0*mm, title)
         
         # Grouped List Background
         group_h = num_lines * line_h
-        c.setFillColor(SYSTEM_GRAY_6)
+        c.setFillColor(CARD_COLOR)
         c.roundRect(margin, sec_y - group_h, sidebar_w, group_h, 4*mm, fill=1, stroke=0)
         
         c.setStrokeColor(SEPARATOR_COLOR)
@@ -563,7 +562,7 @@ def draw_monthly_page(c, year, month, W, H):
             ly = sec_y - i*line_h
             c.line(margin + 4*mm, ly, margin + sidebar_w - 4*mm, ly)
         
-        sec_y -= group_h + 6*mm
+        sec_y -= group_h + 12*mm
 
     # Calendar Grid (Right)
     grid_x = margin + sidebar_w + 10*mm
@@ -632,7 +631,7 @@ def draw_daily_page(c, date, W, H):
     badge_w = c.stringWidth(date_str + " " + year_str, "Helvetica-Bold", 12) + 10*mm
     
     c.saveState()
-    c.setFillColor(SYSTEM_GRAY_6)
+    c.setFillColor(colors.white)
     c.roundRect(margin, badge_y, badge_w, badge_h, 3*mm, fill=1, stroke=0)
     c.restoreState()
     
@@ -670,12 +669,12 @@ def draw_daily_page(c, date, W, H):
     x1 = margin
     c.setFont("Helvetica-Bold", 13)
     c.setFillColor(month_color)
-    draw_icon(c, "todo", x1 + 2*mm, top_y + 5*mm, 4.5*mm, month_color)
-    c.drawString(x1 + 8*mm, top_y + 5*mm, "To Do")
+    draw_icon(c, "todo", x1 + 1*mm, top_y + 1.5*mm, 4.5*mm, month_color)
+    c.drawString(x1 + 7*mm, top_y + 2.0*mm, "To Do")
     
     num_todo = 14
     todo_h = available_h
-    c.setFillColor(SYSTEM_GRAY_6)
+    c.setFillColor(colors.white)
     c.roundRect(x1, bottom_y, col1_w, todo_h, 5*mm, fill=1, stroke=0)
     
     # Add padding inside the box
@@ -704,11 +703,11 @@ def draw_daily_page(c, date, W, H):
     # Priorities (Grouped List)
     c.setFont("Helvetica-Bold", 13)
     c.setFillColor(month_color)
-    draw_icon(c, "priorities", x2 + 2*mm, top_y + 5*mm, 4.5*mm, month_color)
-    c.drawString(x2 + 8*mm, top_y + 5*mm, "Priorities")
+    draw_icon(c, "priorities", x2 + 1*mm, top_y + 1.5*mm, 4.5*mm, month_color)
+    c.drawString(x2 + 7*mm, top_y + 2.0*mm, "Priorities")
     
     prio_h = 40 * mm
-    c.setFillColor(SYSTEM_GRAY_6)
+    c.setFillColor(colors.white)
     c.roundRect(x2, top_y - prio_h, col2_w, prio_h, 5*mm, fill=1, stroke=0)
     
     prio_padding = 4*mm
@@ -723,43 +722,51 @@ def draw_daily_page(c, date, W, H):
     notes_top = top_y - prio_h - 12*mm
     c.setFont("Helvetica-Bold", 13)
     c.setFillColor(month_color)
-    draw_icon(c, "notes", x2 + 2*mm, notes_top + 5*mm, 4.5*mm, month_color)
-    c.drawString(x2 + 8*mm, notes_top + 5*mm, "Notes")
+    draw_icon(c, "notes", x2 + 1*mm, notes_top + 1.5*mm, 4.5*mm, month_color)
+    c.drawString(x2 + 7*mm, notes_top + 2.0*mm, "Notes")
     
     c.setFillColor(CARD_COLOR)
     c.roundRect(x2, bottom_y, col2_w, notes_top - bottom_y, 5*mm, fill=1, stroke=0)
 
     # Column 3: SCHEDULE (Clean Timeline)
     x3 = x2 + col2_w + col_gap
+    
+    # Schedule Box
+    c.setFillColor(colors.white)
+    c.roundRect(x3, bottom_y, col3_w, available_h, 5*mm, fill=1, stroke=0)
+    
     c.setFont("Helvetica-Bold", 13)
     c.setFillColor(month_color)
-    draw_icon(c, "schedule", x3 + 2*mm, top_y + 5*mm, 4.5*mm, month_color)
-    c.drawString(x3 + 8*mm, top_y + 5*mm, "Schedule")
+    draw_icon(c, "schedule", x3 + 1*mm, top_y + 1.5*mm, 4.5*mm, month_color)
+    c.drawString(x3 + 7*mm, top_y + 2.0*mm, "Schedule")
     
     num_hours = 16 # 06:00 to 21:00
-    sched_h = available_h
-    row_h = sched_h / num_hours
+    # Add padding inside the box
+    sched_padding_top = 5*mm
+    sched_padding_bottom = 5*mm
+    usable_sched_h = available_h - sched_padding_top - sched_padding_bottom
+    row_h = usable_sched_h / num_hours
     
     for i in range(num_hours + 1):
-        ly = top_y - i*row_h
+        ly = (top_y - sched_padding_top) - i*row_h
         
         # Time Label - Centered vertically on the line
         if i < num_hours:
             time_str = f"{6+i:02d}:00"
             c.setFont("Helvetica-Bold", 8)
             c.setFillColor(SYSTEM_GRAY)
-            c.drawRightString(x3 + 10*mm, ly - row_h/2 + 1*mm, time_str)
+            c.drawRightString(x3 + 10*mm, ly - row_h/2 + 0.8*mm, time_str)
         
         # Horizontal Line
         c.setStrokeColor(SEPARATOR_COLOR)
         c.setLineWidth(0.1)
-        c.line(x3 + 12*mm, ly, x3 + col3_w, ly)
+        c.line(x3 + 12*mm, ly, x3 + col3_w - 4*mm, ly)
         
     # Vertical Timeline Line
     c.setStrokeColor(month_color)
     c.setStrokeAlpha(0.4)
     c.setLineWidth(0.5)
-    c.line(x3 + 12*mm, top_y, x3 + 12*mm, bottom_y)
+    c.line(x3 + 12*mm, top_y - sched_padding_top, x3 + 12*mm, bottom_y + sched_padding_bottom)
     c.setStrokeAlpha(1.0)
 
     # Year Progress Bar (Centered at Bottom)
