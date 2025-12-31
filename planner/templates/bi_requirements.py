@@ -2,11 +2,12 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from datetime import datetime
-from .generator import (
+from ..core.constants import (
     IPAD_PRO_11_LANDSCAPE, BACKGROUND_COLOR, CARD_COLOR, LABEL_COLOR, 
     SECONDARY_LABEL, SEPARATOR_COLOR, SYSTEM_BLUE, SYSTEM_GRAY, SYSTEM_GRAY_2,
-    draw_icon, draw_apple_tab, MONTH_COLORS
+    MONTH_COLORS
 )
+from ..core.utils import draw_icon, draw_apple_tab
 
 def draw_bi_requirements_page(c, W, H):
     margin = 20 * mm

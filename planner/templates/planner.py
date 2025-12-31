@@ -1,102 +1,17 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.lib import colors
-from reportlab.graphics import renderPDF
-from svglib.svglib import svg2rlg
 import calendar
 import os
 from datetime import datetime, timedelta
 
-# iPad Pro 11" Landscape: 2388 x 1668 pixels @ 264 ppi
-# 2388 / 264 * 72 = 651.27 pts
-# 1668 / 264 * 72 = 454.91 pts
-IPAD_PRO_11_LANDSCAPE = (651.27, 454.91)
-
-# Apple System Colors (Muted/Pastel Palette)
-SYSTEM_BLUE = colors.HexColor("#5E97F6")
-SYSTEM_RED = colors.HexColor("#EF9A9A")
-SYSTEM_GRAY = colors.HexColor("#8E8E93")
-SYSTEM_GRAY_2 = colors.HexColor("#AEAEB2")
-SYSTEM_GRAY_3 = colors.HexColor("#C7C7CC")
-SYSTEM_GRAY_4 = colors.HexColor("#D1D1D6")
-SYSTEM_GRAY_5 = colors.HexColor("#E5E5EA")
-SYSTEM_GRAY_6 = colors.HexColor("#F2F0E6") # Lighter cream for cards
-LABEL_COLOR = colors.HexColor("#1D1D1F")
-SECONDARY_LABEL = colors.HexColor("#6E6E73")
-TERTIARY_LABEL = colors.HexColor("#86868B")
-SEPARATOR_COLOR = colors.HexColor("#D2D2D7")
-BACKGROUND_COLOR = colors.HexColor("#E6E3D2") # Warm Cream Background
-CARD_COLOR = colors.HexColor("#F2F0E7")
-
-# Muted "Earth-Tone" Pastel Palette for Monthly Themes
-MONTH_COLORS = [
-    colors.HexColor("#D48C88"), # Jan - Muted Rose
-    colors.HexColor("#D9A07E"), # Feb - Muted Terracotta
-    colors.HexColor("#A3B18A"), # Mar - Sage Green
-    colors.HexColor("#84A59D"), # Apr - Muted Teal
-    colors.HexColor("#90A8C3"), # May - Muted Steel Blue
-    colors.HexColor("#A594B1"), # Jun - Muted Lavender
-    colors.HexColor("#8E7D9E"), # Jul - Dusty Purple
-    colors.HexColor("#B5838D"), # Aug - Dusty Rose
-    colors.HexColor("#E5989B"), # Sep - Muted Coral
-    colors.HexColor("#DDBEA9"), # Oct - Sand
-    colors.HexColor("#A5A5A5"), # Nov - Muted Gray
-    colors.HexColor("#6B705C"), # Dec - Olive
-]
-
-# Icon Mapping
-ICON_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets", "icons")
-ICONS = {
-    "todo": "add_task_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "priorities": "bookmark_star_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "notes": "event_list_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "schedule": "schedule_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "home": "today_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "important": "notification_important_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "goals": "bookmark_check_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "calendar": "calendar_month_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "overview": "date_range_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "discovery": "list_alt_check_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
-}
-
-def draw_icon(c, icon_key, x, y, size, color=None):
-    """Draws and colorizes an SVG icon."""
-    if icon_key not in ICONS:
-        return
-    
-    path = os.path.join(ICON_DIR, ICONS[icon_key])
-    if not os.path.exists(path):
-        return
-        
-    drawing = svg2rlg(path)
-    
-    # Scale the drawing
-    scale = size / drawing.width
-    drawing.width *= scale
-    drawing.height *= scale
-    drawing.scale(scale, scale)
-    
-    # Colorize the drawing
-    if color:
-        def colorize(obj):
-            if hasattr(obj, 'fillColor'):
-                obj.fillColor = color
-            if hasattr(obj, 'strokeColor'):
-                obj.strokeColor = color
-            if hasattr(obj, 'contents'):
-                for child in obj.contents:
-                    colorize(child)
-        colorize(drawing)
-        
-    renderPDF.draw(drawing, c, x, y)
-
-def is_dark_color(color):
-    """Simple brightness check to decide text color."""
-    # Get RGB values (0-1)
-    r, g, b = color.red, color.green, color.blue
-    # Standard luminance formula
-    luminance = (0.299 * r + 0.587 * g + 0.114 * b)
-    return luminance < 0.6
+from ..core.constants import (
+    IPAD_PRO_11_LANDSCAPE, BACKGROUND_COLOR, CARD_COLOR, LABEL_COLOR,
+    SEPARATOR_COLOR, SYSTEM_BLUE, SYSTEM_RED, SYSTEM_GRAY, SYSTEM_GRAY_2,
+    SYSTEM_GRAY_3, SYSTEM_GRAY_4, SYSTEM_GRAY_5, SYSTEM_GRAY_6,
+    SECONDARY_LABEL, TERTIARY_LABEL, MONTH_COLORS
+)
+from ..core.utils import draw_icon, is_dark_color, draw_apple_tab
 
 def draw_side_tabs(c, W, H, current_month=None):
     """Draws vertical month tabs on the right side of the page."""
@@ -165,41 +80,6 @@ def draw_home_button(c, W, H, margin, color=LABEL_COLOR):
     c.drawString(x + 9*mm, y + btn_h/2 - 1.2*mm, "Home")
     
     c.linkRect("", "Cover", (x, y, x + btn_w, y + btn_h), Border='[0 0 0]')
-    c.restoreState()
-
-def draw_apple_tab(c, x, y, w, h, text, active=False, destination=None, color=LABEL_COLOR, icon_key=None):
-    """Draws a native-looking iPadOS segmented control or button with optional hyperlink."""
-    c.saveState()
-    
-    if active:
-        c.setFillColor(color)
-        c.roundRect(x, y, w, h, 2.5*mm, fill=1, stroke=0)
-        text_color = colors.white
-    else:
-        c.setFillColor(CARD_COLOR)
-        c.roundRect(x, y, w, h, 2.5*mm, fill=1, stroke=0)
-        text_color = color
-    
-    c.setFillAlpha(1.0)
-    # Subtle border for inactive tabs
-    if not active:
-        c.setStrokeColor(SEPARATOR_COLOR)
-        c.setLineWidth(0.1)
-        c.roundRect(x, y, w, h, 2.5*mm, fill=0, stroke=1)
-
-    c.setFillColor(text_color)
-    c.setFont("Helvetica-Bold", 10)
-    
-    if icon_key:
-        draw_icon(c, icon_key, x + 3*mm, y + 2.2*mm, 4.5*mm, text_color)
-        c.drawString(x + 9*mm, y + h/2 - 1.2*mm, text)
-    else:
-        c.drawCentredString(x + w/2, y + h/2 - 1.2*mm, text)
-    
-    if destination:
-        # Create the clickable link area
-        c.linkRect("", destination, (x, y, x+w, y+h), Border='[0 0 0]')
-        
     c.restoreState()
 
 def draw_yearly_tracker(c, year, W, H):

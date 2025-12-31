@@ -2,31 +2,11 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.lib import colors
 from datetime import datetime
-from .generator import (
+from ..core.constants import (
     IPAD_PRO_11_LANDSCAPE, BACKGROUND_COLOR, CARD_COLOR, LABEL_COLOR, 
-    SEPARATOR_COLOR, SYSTEM_BLUE, SYSTEM_GRAY, SYSTEM_GRAY_2,
-    draw_icon, draw_apple_tab, MONTH_COLORS
+    SEPARATOR_COLOR, SYSTEM_BLUE, SYSTEM_GRAY, SYSTEM_GRAY_2, MONTH_COLORS
 )
-
-def draw_centered_rows(c, x, y_top, w, h, num_rows, row_h, draw_row_func):
-    """
-    Helper to draw a block of rows centered vertically within a box.
-    y_top is the top edge of the box.
-    h is the total height of the box.
-    """
-    total_content_h = num_rows * row_h
-    # Vertical margin to center the block of rows
-    margin_y = (h - total_content_h) / 2
-    
-    for i in range(num_rows):
-        # Top of this specific row
-        row_top = y_top - margin_y - (i * row_h)
-        # Bottom of this specific row
-        row_bottom = row_top - row_h
-        # Center of this specific row
-        row_center = row_top - (row_h / 2)
-        
-        draw_row_func(c, x, row_top, row_bottom, row_center, w, row_h, i)
+from ..core.utils import draw_icon, draw_apple_tab, draw_centered_rows
 
 def draw_meeting_notes_page(c, W, H):
     margin = 20 * mm

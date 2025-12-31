@@ -8,17 +8,30 @@ I've also added two sample PDFs for meeting notes and BI requirements. These wer
 
 ## Usage
 
+The project now uses a single entry point `generate.py` to create different PDF templates.
+
+### Generate Yearly Planner
 To generate the default 2026 planner:
 ```bash
-python generate_planner.py
+python generate.py planner
 ```
 
 To generate a planner for a specific year:
 ```bash
-python generate_planner.py 2027
+python generate.py planner --year 2027
 ```
 
-The output will be saved as `planner_{year}.pdf`.
+### Generate Meeting Notes
+```bash
+python generate.py meeting
+```
+
+### Generate BI Requirements
+```bash
+python generate.py bi_requirements
+```
+
+The output will be saved as a PDF in the current directory.
 
 ## Requirements
 - reportlab
