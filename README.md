@@ -1,8 +1,10 @@
 # Planner PDF Generator
 
-This is completely vibe coded, so please excuse.
+This is completely vibe coded using VS Code with Github Copilot and Gemini 3 Flash.
 
-If you just want the planner it's the PDF file above.
+If you just want the planner it's the PDF file above named planner_2026.pdf.
+
+I've also added two sample PDFs for meeting notes and BI requirements. These were created in the same way.
 
 ## Usage
 
