@@ -55,7 +55,8 @@ ICONS = {
     "important": "notification_important_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
     "goals": "bookmark_check_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
     "calendar": "calendar_month_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
-    "overview": "date_range_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
+    "overview": "date_range_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg",
+    "discovery": "list_alt_check_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg"
 }
 
 def draw_icon(c, icon_key, x, y, size, color=None):
