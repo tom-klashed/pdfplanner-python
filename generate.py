@@ -16,7 +16,7 @@ def main():
     planner_parser.add_argument("--output", type=str, help="Output file path")
 
     # Meeting Notes command
-    meeting_parser = subparsers.add_parser("meeting", help="Generate meeting notes template")
+    meeting_parser = subparsers.add_parser("meeting_notes", help="Generate meeting notes template")
     meeting_parser.add_argument("--output", type=str, default="meeting_notes.pdf", help="Output file path")
 
     # BI Requirements command
@@ -32,7 +32,7 @@ def main():
         generate_year_pdf(year, output)
         print("Done!")
     
-    elif args.command == "meeting":
+    elif args.command == "meeting_notes":
         print(f"Generating meeting notes to {args.output}...")
         generate_meeting_notes_pdf(args.output)
         print("Done!")

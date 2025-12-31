@@ -23,7 +23,7 @@ python generate.py planner --year 2027
 
 ### Generate Meeting Notes
 ```bash
-python generate.py meeting
+python generate.py meeting_notes
 ```
 
 ### Generate BI Requirements
